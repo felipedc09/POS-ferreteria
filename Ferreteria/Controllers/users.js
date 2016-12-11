@@ -27,7 +27,12 @@ exports.findAll = function (req, res) {
                 }));
             } else {
                 //res.contentType('application/json').status(200);
-                res.render('index', { title: result.rows[1].IDTIPOPRODUCTO });
+                if(result.rows==0){
+                  console.log("no hay nada");
+                }else{
+                  console.log("si hay algoa");
+                }
+                res.render('users', { title: result.rows });
             }
             // Release the connection
             connection.release(
