@@ -15,7 +15,7 @@ exports.findAll = function (req, res) {
             return;
         }
 
-        connection.execute("SELECT * FROM cargo", {}, {
+        connection.execute("SELECT * FROM tipoproducto", {}, {
             outFormat: oracledb.OBJECT // Return the result as Object
         }, function (err, result) {
             if (err) {
@@ -40,6 +40,4 @@ exports.findAll = function (req, res) {
                 });
         });
     });
-} 
-
-    
+}
