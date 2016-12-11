@@ -20,7 +20,10 @@
     "url": "https://github.com/felipedc09/POS_Ferreteria/issues"
   },
   "homepage": "https://github.com/felipedc09/POS_Ferreteria#readme",
+<<<<<<< HEAD
 
+=======
+>>>>>>> 27a01c5a994f97738c2aee97e385a19a4881b706
   "dependencies": {
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
