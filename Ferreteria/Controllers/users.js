@@ -1,6 +1,15 @@
 var oracledb = require('oracledb');
 var dbConfig = require('../dbConfig.js');
 
+exports.prueba = function (route){
+    app.get(route, function(req, res){
+  var data = {
+        name: "Hbs",
+    }
+  res.render('index', data);
+});
+}
+
 //GET - Return all registers
 exports.findAll = function (req, res) {
     oracledb.getConnection(dbConfig, function (err, connection) {
@@ -26,8 +35,8 @@ exports.findAll = function (req, res) {
                     detailed_message: err.message
                 }));
             } else {
-                res.contentType('application/json').status(200);
-                res.send(JSON.stringify(result.rows));
+                // res.contentType('application/json').status(200);
+                res.render('users', { title : 'Usuarios', data : result.rows[0] });
             }
             // Release the connection
             connection.release(
