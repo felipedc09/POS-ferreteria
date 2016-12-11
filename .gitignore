@@ -1,7 +1,6 @@
-# ignorar los archivos que coincidan con los siguientes patrones 
+# ignorar los archivos que coincidan con los siguientes patrones
 
 Ferreteria/Controllers
 Ferreteria/node_modules
 Ferreteria/app.js
 Ferreteria/dbConfig.js
-
