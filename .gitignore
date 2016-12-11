@@ -1,4 +1,4 @@
 # ignorar los archivos que coincidan con los siguientes patrones
 
-Ferreteria/node_modules
+Ferreteria/node_modules/
 Ferreteria/dbConfig.js
