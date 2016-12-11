@@ -7,6 +7,9 @@ var users = require('../Controllers/users.js');
 //   res.render('index', { title: users.findAll });
 // });
 router.get('/', users.findAll);
+router.get('/:USER_NAME', users.getByName);
+router.post('/', users.findAll);
+
 
 
 module.exports = router;
