@@ -36,7 +36,7 @@ exports.findAll = function (req, res) {
                 }));
             } else {
                 // res.contentType('application/json').status(200);
-                res.render('users', { title : 'Usuarios', data : result.rows[0] });
+                res.render('users', { title : 'Usuario', data : result.rows[0] });
             }
             // Release the connection
             connection.release(
