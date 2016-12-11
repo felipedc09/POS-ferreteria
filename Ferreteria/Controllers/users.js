@@ -26,8 +26,8 @@ exports.findAll = function (req, res) {
                     detailed_message: err.message
                 }));
             } else {
-                res.contentType('application/json').status(200);
-                res.send(JSON.stringify(result.rows));
+                //res.contentType('application/json').status(200);
+                res.render('index', { title: result.rows[1].IDTIPOPRODUCTO });
             }
             // Release the connection
             connection.release(

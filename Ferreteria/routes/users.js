@@ -3,7 +3,7 @@ var router = express.Router();
 var users = require('../Controllers/users.js');
 
 /* GET users listing. */
-router.route('/') 
+router.route('/')
  .get(users.findAll);
 
 
