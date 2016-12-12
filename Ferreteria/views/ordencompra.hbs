@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.1.0/jspdf.plugin.autotable.js"></script>
+    <title></title>
+</head>
+
+<body>
+    <h1>Factura orden de compra</h1>
+    <table>
+        <tr>
+            <th>No. Orden compra</th>
+            <td id="ordenCompra"></td>
+            <th>Fecha</th>
+            <td id="fecha"></td>
+            <th>Empleado</th>
+            <td id=nombreE></td>
+            <th>Identificacion</th>
+            <td id="idE"><td>
+        </tr>
+        <tr>
+            <th>nit Proveedor</th>
+            <td id="cedulaProveedor"><td>
+            <th>nombre</th>
+            <td>
+              <select id="nombreProveedor">
+              </select>
+            </td>
+            <th>direccion</th>
+            <td id="direccionProveedor"></td>
+            <th>telefono</th>
+            <td id="telefonoProveedor"></td>
+        </tr>
+        <tr>
+            <th><button type="button" id="buscarProv">Buscar</button></th>
+            <th><button type="button" id="agregarProv">Agregar proveedor</button></th>
+        </tr>
+    </table>
+    <table id="detalle">
+        <tr>
+
+            <th>item</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+    </table>
+    <table>
+        <select class="OS">
+
+        </select>
+        <tr>
+            <th><button type="button" id="enviar">Enviar</button></th>
+        </tr>
+        <tr>
+            <th><button type="button" name="agregarProd">Agregar Producto</button></th>
+        </tr>
+        <tr>
+            <td colspan="3">Subtotal</td>
+            <td>250</td>
+        </tr>
+        <tr>
+            <td colspan="3">Gastos de envío</td>
+            <td>5</td>
+        </tr>
+        <tr>
+            <td colspan="3">Precio total</td>
+            <td>255</td>
+        </tr>
+    </table>
+</body>
+
+</html>
