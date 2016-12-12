@@ -43,6 +43,7 @@ $(document).ready(function() {
         aux = aux + '"NUMCEDULA": "' + $("#cedulaProveedor").text() + '"' + ",";
         aux = aux + '"FECHATRANSACCION": "' + $("#fecha").text() + '"' + "}";
         var obj = JSON.parse(aux);
+        facturaPdf(obj);
         $.ajax({
             url: 'http://localhost:3000/ordencompra',
             type: 'POST',
@@ -66,6 +67,29 @@ $(document).ready(function() {
     });
 });
 
+function facturaPdf(json) {
+    var columns = ["No orden Compra", "Fecha", "Empleado", "Proveedor", "Direccion", "Telefono"];
+    var rows = [
+        [$("#ordenCompra").text(), $("#fecha").text(), $("#idE").text(), $("#nombreProveedor").text(),
+            $("#direccionProveedor").text(), $("#telefonoProveedor").text()
+        ],
+
+    ];
+    var columns1 = ["Item", "Producto", "Precio", "Cantidad"];
+    var rows1=[];
+    var j;
+    for (var i = 1; i <= json.CANTIDAD; i++) {
+      rows1[i-1]=[i,json["PRODUCTO"+i].NOMBRE,"null",json["PRODUCTO"+i].CANTIDAD];
+    }
+    var doc = new jsPDF('p', 'pt');
+    var doc1 = new jsPDF('p', 'pt');
+
+    doc.autoTable(columns, rows);
+    doc1.autoTable(columns1,rows1);
+    doc.save('encabezado.pdf');
+    doc1.save('detalle.pdf')
+
+}
 function getUsuario() {
     $.ajax({
         url: 'http://localhost:3000/usuario',
