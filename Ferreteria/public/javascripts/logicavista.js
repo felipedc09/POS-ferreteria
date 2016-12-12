@@ -1,20 +1,12 @@
+var item = 0;
 $(document).ready(function() {
-    getProductos()
-    getOrdenCompra()
-    getUsuario()
-    infoProveedor = getProveedores();
+    //getUsuario()
+    //infoProveedor = getProveedores();
     var item = 0;
-    $(".claseProducto").click(function() {
-        item += 1;
-        var aux;
-        aux = aux + "<tr id=tabla" + item + ">";
-        aux = aux + "<td id=item" + item + ">" + item + "</td>";
-        aux = aux + "<td id=producto" + item + ">" + $(".OS option:selected").text() + "</td>";
-        aux = aux + "<td id=precio" + item + ">" + "precio</td>";
-        aux = aux + "<td>" + "<input type='text' id=cantidad" + item + ">" + "</td>";
-        aux = aux + "</tr>";
-        $("#detalle").append(aux);
-    });
+    getOrdenCompra();
+    getProductos();
+    
+    
     $(".claseProveedor").click(function() {
         for (var i = 0; i < infoProveedor.length; i++) {
             if (infoProveedor[i].NOMBREPERSONA == $(".OS option:selected").text()) {
@@ -52,7 +44,7 @@ $(document).ready(function() {
             success: function(json) {
                 for (var i = 0; i < json.length; i++) {
                     $("#OS").append("<option class='claseProducto'>"
-                        json[i].NOMBRE "</option>");
+                       + json[i].NOMBRE + "</option>");
                 }
 
             },
@@ -110,38 +102,48 @@ function getUsuario() {
 
 function getOrdenCompra() {
     $.ajax({
-        url: 'http://localhost:3000/orden',
+        url: '/compras/orden',
         type: 'GET',
         dataType: 'json',
         success: function(json) {
-            $("#ordenCompra").text(json.NUMEROTRANSACCION);
+            $("#ordenCompra").text(json.ID);
         },
         error: function(xhr, status) {
-            alert('Disculpe, existió un problema');
+            console.log('Disculpe, existió un problema getOrdenCompra'+JSON.stringify(xhr)+""+status);
         },
         complete: function(xhr, status) {
-            alert('Petición realizada');
+            console.log('Petición realizada getOrdenCompra');
         }
     });
 }
 
 function getProductos() {
     $.ajax({
-        url: 'http://localhost:3000/productos',
+        url: '/productos/all',
         type: 'GET',
         dataType: 'json',
         success: function(json) {
             for (var i = 0; i < json.length; i++) {
-                $("#OS").append("<option class='claseProducto'>"
-                    json[i].NOMBRE "</option>");
+                $(".OS").append("<option class='claseProducto'>"
+                    + json[i].NOOMBRE + "</option>");
             }
-
+            $(".claseProducto").click(function () {
+                item += 1;
+                var aux;
+                aux = aux + "<tr id=tabla" + item + ">";
+                aux = aux + "<td id=item" + item + ">" + item + "</td>";
+                aux = aux + "<td id=producto" + item + ">" + $(".OS option:selected").text() + "</td>";
+                aux = aux + "<td id=precio" + item + ">" + "precio</td>";
+                aux = aux + "<td>" + "<input type='text' id=cantidad" + item + ">" + "</td>";
+                aux = aux + "</tr>";
+                $("#detalle").append(aux);
+            });
         },
         error: function(xhr, status) {
-            alert('Disculpe, existió un problema');
+            console.log('Disculpe, existió un problema');
         },
         complete: function(xhr, status) {
-            alert('Petición realizada');
+            console.log('Petición realizada');
         }
     });
 }
@@ -155,7 +157,7 @@ function getProveedores() {
         success: function(json) {
             for (var i = 0; i < json.length; i++) {
                 $("#nombreProveedor").append("<option class='claseProveedor'>"
-                    json[i].NOMBREPERSONA "</option>");
+                    + json[i].NOMBREPERSONA + "</option>");
             }
             infoProveedor = json;
         },

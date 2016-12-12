@@ -1,14 +1,46 @@
 var oracledb = require('oracledb');
-var dbConfig = require('../../dbConfig.js');
+var dbConfig = require('../dbConfig.js');
 
-exports.findAll =  function (req, res) {
-    generalCtr.getAll(req, res, "SELECT * FROM CATALOGOPRODUCTO", function(productos){
-        res.send(JSON.stringify(productos));
+//GET - Return all registers
+exports.getAll = function (req, res, query, callback) {
+    oracledb.getConnection(dbConfig, function (err, connection) {
+        if (err) {
+            // Error connecting to DB
+            res.set('Content-Type', 'application/json');
+            res.status(500).send(JSON.stringify({
+                status: 500,
+                message: "Error connecting to DB",
+                detailed_message: err.message
+            }));
+            return;
+        }
+        connection.execute(query, {}, {
+            outFormat: oracledb.OBJECT // Return the result as Object
+        }, function (err, result) {
+            if (err) {
+                res.set('Content-Type', 'application/json');
+                res.status(500).send(JSON.stringify({
+                    status: 500,
+                    message: "Error getting the user profile",
+                    detailed_message: err.message
+                }));
+            } else {
+                callback(result.rows);
+            }
+            // Release the connection
+            connection.release(
+                function (err) {
+                    if (err) {
+                        console.error(err.message);
+                    } else {
+                        console.log("GET /user_profiles : Connection released");
+                    }
+                });
+        });
     });
 }
 
-
-exports.getByName = function (req, res) {
+exports.getByElement = function (req, res, query, params, callback) {
     oracledb.getConnection(dbConfig, function (err, connection) {
         if (err) {
             // Error connecting to DB
@@ -21,7 +53,7 @@ exports.getByName = function (req, res) {
             return;
         }
 
-        connection.execute("SELECT * FROM EMPLEADO WHERE IDENTIFICACION = :IDENTIFICACION", [req.params.IDENTIFICACION], {
+        connection.execute(query, params, {
             outFormat: oracledb.OBJECT // Return the result as Object
         }, function (err, result) {
             if (err || result.rows.length < 1) {
@@ -33,7 +65,7 @@ exports.getByName = function (req, res) {
                     detailed_message: err ? err.message : ""
                 }));
             } else {
-                res.render('users', { title: 'Usuarios', data: result.rows[0] });
+                callback(result.rows);
             }
             // Release the connection
             connection.release(
@@ -49,7 +81,7 @@ exports.getByName = function (req, res) {
 }
 
 
-exports.createUser = function (req, res) {
+exports.createUser =  function (req, res) {
     oracledb.getConnection(connAttrs, function (err, connection) {
         if (err) {
             // Error connecting to DB
@@ -63,8 +95,8 @@ exports.createUser = function (req, res) {
         connection.execute("INSERT INTO EMPLEADO VALUES " +
             "(:IDEMPLEADO, :NOMBREEMPLEADO, :APELLIDOEMPLEADO, :TELEFONOEMPLEADO, :DIRECCIONEMPLEADO, :EMAILEMPLEADO, :FECHAINGRESO, :FECHARETIRO, :IDENTIFICACION, :PASS" +
             ":AGE, :COUNTRY, :THEME) ", [req.body.USER_NAME, req.body.DISPLAY_NAME,
-            req.body.DESCRIPTION, req.body.GENDER, req.body.AGE, req.body.COUNTRY,
-            req.body.THEME], {
+                            req.body.DESCRIPTION, req.body.GENDER, req.body.AGE, req.body.COUNTRY,
+                            req.body.THEME], {
                 autoCommit: true,
                 outFormat: oracledb.OBJECT // Return the result as Object
             },
@@ -78,10 +110,8 @@ exports.createUser = function (req, res) {
                         detailed_message: err.message
                     }));
                 } else {
-                    if (!req.session.username) {
-                        res.redirect("login");
-                    }
-                    res.render('POS/POS', { layout: 'POS/layoutPOS',title: 'Clientes', user : req.session.username});
+                    // Successfully created the resource
+                    res.status(201).set('Location', '/user_profiles/' + req.body.USER_NAME).end();
                 }
                 // Release the connection
                 connection.release(

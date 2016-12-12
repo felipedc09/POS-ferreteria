@@ -30,17 +30,19 @@ exports.createOrdenCompra = function (req, res) {
                 if (!req.session.username) {
                     res.redirect("/login");
                 }
-                var idOrden = 0;
+                var idOrden = {};
                 if (result.rows[0].ID == null) {
-                    idOrden = 1;
+                    idOrden = {"ID":"1"};
                 } else {
-                    idOrden = result.rows[0].ID + 1;
+                    idOrden = {"ID":result.rows[0].ID + 1};
                 }
-                productosCtr.getProductos(function (productos) {
-                    proveedoresCtr.getProveedores(function (proveedores) {
-                        res.render('POS/ordenCompra', { layout: 'POS/layoutPOS', title: 'Compras', user: req.session.username, orden: idOrden, productos: productos, proveedores : proveedores });
-                    });
-                });
+                console.log(JSON.stringify(idOrden))
+                res.send(JSON.stringify(idOrden));
+                // productosCtr.getProductos(function (productos) {
+                //     proveedoresCtr.getProveedores(function (proveedores) {
+                //         res.render('POS/ordenCompra', { layout: 'POS/layoutPOS', title: 'Compras', user: req.session.username, orden: idOrden, productos: productos, proveedores : proveedores });
+                //     });
+                // });
             }
             // Release the connection
             connection.release(
