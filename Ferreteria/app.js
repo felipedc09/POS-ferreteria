@@ -4,11 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session')
 var oracledb = require('oracledb');
 var dbConfig = require('./dbConfig.js');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var usuarios = require('./routes/usuarios');
+var login = require('./routes/login');
+var compras = require('./routes/compras');
+var productos = require('./routes/productos');
+var proveedores = require('./routes/proveedores');
+var clientes = require('./routes/clientes');
 
 var app = express();
 
@@ -22,10 +28,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'ferreteria', cookie: { maxAge: 60000 }}))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));// redirect CSS bootstrap
+app.use('/fonts/', express.static(__dirname + '/node_modules/bootstrap/fonts'));// redirect CSS bootstrap
 
 //Conncetion Data Base Oracle
 oracledb.getConnection(
@@ -53,7 +61,12 @@ oracledb.getConnection(
   });
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/usuarios', usuarios);
+app.use('/login', login);
+app.use('/compras', compras);
+app.use('/productos', productos);
+app.use('/proveedores', proveedores);
+app.use('/clientes', clientes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
