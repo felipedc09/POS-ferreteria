@@ -132,8 +132,8 @@ function getProductos() {
         dataType: 'json',
         success: function(json) {
             for (var i = 0; i < json.length; i++) {
-                $("#OS").append("<option class='claseProducto'>"
-                    json[i].NOMBRE "</option>");
+                $("#OS").append("<option class='claseProducto'>"+
+                    +json[i].NOMBRE "</option>");
             }
 
         },
@@ -154,8 +154,8 @@ function getProveedores() {
         dataType: 'json',
         success: function(json) {
             for (var i = 0; i < json.length; i++) {
-                $("#nombreProveedor").append("<option class='claseProveedor'>"
-                    json[i].NOMBREPERSONA "</option>");
+                $("#nombreProveedor").append("<option class='claseProveedor'>"+
+                    json[i].NOMBREPERSONA +"</option>");
             }
             infoProveedor = json;
         },
